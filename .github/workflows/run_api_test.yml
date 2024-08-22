@@ -18,77 +18,20 @@ jobs:
       with:
         node-version: '20'
 
-    - name: Install Newman and html reporter
-      run: npm install -g newman newman-reporter-html
-
-    - name: Create environment file with hardcoded password
-      run: |
-        cat <<EOF > TEST.postman_environment_temp.json
-        {
-          "id": "83f54d8f-f505-44a7-a0cc-47e049fccfb7",
-          "name": "TEST",
-          "values": [
-            {
-              "key": "USERNAME",
-              "value": "samantaramospodadera@gmail.com",
-              "enabled": true
-            },
-            {
-              "key": "PASSWORD",
-              "value": "ATATT3xFfGF0LGjKnrbmfaet2jNN1KwpzF_5EWamfKNIlJ0nSieEWSpwSC1lRrDoXqRJJocB2BedFjgRPIrBgzpOZVhvRUBR3IoPrnPJ9JNZz2z8X9UE2DDApSuUpNnkXu-JF91Cvp6ftK20D0gQ4mtRKYffrtMYHTJpG7VM3hzSDNQj89VNr38=362C957F",
-              "type": "secret",
-              "enabled": true
-            },
-            {
-              "key": "JIRAURL",
-              "value": "https://samantarp.atlassian.net",
-              "enabled": true
-            },
-            {
-              "key": "ISSUEID",
-              "value": "ATJ-1",
-              "enabled": true
-            },
-            {
-              "key": "COMMENTID",
-              "value": "10020",
-              "enabled": true
-            },
-            {
-              "key": "COMMENTTEXT",
-              "value": "test comment",
-              "type": "default",
-              "enabled": true
-            },
-            {
-              "key": "COMMENT_NOT_EXIST",
-              "value": "1000300",
-              "enabled": true
-            },
-            {
-              "key": "COMMENT_CREATED",
-              "value": "00990099",
-              "enabled": true
-            },
-            {
-              "key": "INVALIDCOMMENT",
-              "value": "999",
-              "enabled": true
-            }
-          ],
-          "_postman_variable_scope": "environment",
-          "_postman_exported_at": "2024-08-22T12:02:22.605Z",
-          "_postman_exported_using": "Postman/11.9.1-240820-0942"
-        }
-        EOF
+    - name: Install Newman and htmlextra reporter
+      run: npm install -g newman newman-reporter-htmlextra
 
     - name: Run Postman collection with detailed HTML report
       continue-on-error: true
       run: |
         newman run jiraapitest.postman_collection.json \
-        --environment TEST.postman_environment_temp.json \
-        --reporters cli,html \
-        --reporter-html-export newman/report.html
+        --environment TEST.postman_environment.json \
+        --reporters htmlextra \
+        --reporter-htmlextra-export newman/report.html \
+        --reporter-htmlextra-title "JIRA API Test Report" \
+        --reporter-htmlextra-showOnlyFails false \
+        --reporter-htmlextra-noTestAssertions false \
+        --reporter-htmlextra-showEnvironmentData true
 
     - name: Upload Test Report
       uses: actions/upload-artifact@v4
@@ -96,7 +39,4 @@ jobs:
         name: postman-test-report
         path: newman/report.html
 
-    - name: Print Newman log (if needed)
-      if: failure()
-      run: cat newman/report.html
 
