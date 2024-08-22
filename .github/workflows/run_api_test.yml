@@ -21,24 +21,33 @@ jobs:
     - name: Install Newman and html reporter
       run: npm install -g newman newman-reporter-html
 
-    - name: Inject GitHub Secret into environment file
+    - name: Verify if PASSWORD secret is available
       run: |
-        # Reemplaza la contraseña en el archivo de entorno usando sed
-        sed -i 's/\${PASSWORD}/${{ secrets.PASSWORD }}/g' TEST.postman_environment.json
-
-    - name: Display final environment file content (for debugging)
-      run: cat TEST.postman_environment.json
+        if [ -z "${{ secrets.PASSWORD }}" ]; then
+          echo "PASSWORD secret is not set."
+        else
+          echo "PASSWORD secret is set."
+        fi
 
     - name: Run Postman collection with detailed HTML report
       continue-on-error: true
       run: |
+        # Export PASSWORD variable for Newman
+        export PASSWORD=${{ secrets.PASSWORD }}
+        
+        # Run Newman with the environment file and injected password
         newman run jiraapitest.postman_collection.json \
         --environment TEST.postman_environment.json \
         --reporters cli,html \
-        --reporter-html-export newman/report.html
+        --reporter-html-export newman/report.html \
+        --env-var "PASSWORD=${PASSWORD}"
 
     - name: Upload Test Report
       uses: actions/upload-artifact@v4
       with:
         name: postman-test-report
         path: newman/report.html
+
+    - name: Print Newman log (if needed)
+      run: cat newman/report.html
+
