@@ -22,20 +22,19 @@ jobs:
       run: npm install -g newman newman-reporter-htmlextra
 
     - name: Run Postman collection with detailed HTML report
+      env:
+        PASSWORD: ${{ secrets.PASSWORD }} # Utiliza el secreto de GitHub
       continue-on-error: true
       run: |
-        # Reemplazar la variable PASSWORD en el archivo de entorno
-        export PASSWORD=${{ secrets.PASSWORD }}
-        
-        # Ejecutar Newman usando el archivo de entorno existente
         newman run jiraapitest.postman_collection.json \
         --environment TEST.postman_environment.json \
+        --env-var PASSWORD=${{ secrets.PASSWORD }} \
         --reporters htmlextra \
         --reporter-htmlextra-export newman/report.html \
         --reporter-htmlextra-title "JIRA API Test Report" \
         --reporter-htmlextra-showOnlyFails false \
         --reporter-htmlextra-noTestAssertions false \
-        --reporter-htmlextra-showEnvironmentData false
+        --reporter-htmlextra-showEnvironmentData true
 
     - name: Upload Test Report
       uses: actions/upload-artifact@v4
