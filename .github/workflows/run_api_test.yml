@@ -21,15 +21,7 @@ jobs:
     - name: Install Newman and html reporter
       run: npm install -g newman newman-reporter-html
 
-    - name: Verify if PASSWORD secret is available
-      run: |
-        if [ -z "${{ secrets.PASSWORD }}" ]; then
-          echo "PASSWORD secret is not set."
-        else
-          echo "PASSWORD secret is set."
-        fi
-
-    - name: Create environment file with injected password
+    - name: Create environment file with hardcoded password
       run: |
         cat <<EOF > TEST.postman_environment_temp.json
         {
@@ -43,7 +35,7 @@ jobs:
             },
             {
               "key": "PASSWORD",
-              "value": "${{ secrets.PASSWORD }}",
+              "value": "ATATT3xFfGF0LGjKnrbmfaet2jNN1KwpzF_5EWamfKNIlJ0nSieEWSpwSC1lRrDoXqRJJocB2BedFjgRPIrBgzpOZVhvRUBR3IoPrnPJ9JNZz2z8X9UE2DDApSuUpNnkXu-JF91Cvp6ftK20D0gQ4mtRKYffrtMYHTJpG7VM3hzSDNQj89VNr38=362C957F",  # Reemplaza con la contraseña real
               "type": "secret",
               "enabled": true
             },
@@ -107,3 +99,4 @@ jobs:
     - name: Print Newman log (if needed)
       if: failure()
       run: cat newman/report.html
+
