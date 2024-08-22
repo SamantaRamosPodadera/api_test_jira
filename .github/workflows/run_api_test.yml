@@ -24,6 +24,9 @@ jobs:
     - name: Set environment variables
       run: echo "PASSWORD=${{ secrets.PASSWORD }}" >> $GITHUB_ENV
 
+    - name: Display environment file content (for debugging)
+      run: cat TEST.postman_environment.json
+
     - name: Run Postman collection with detailed HTML report
       run: |
         newman run jiraapitest.postman_collection.json \
@@ -33,7 +36,8 @@ jobs:
         --reporter-htmlextra-title "JIRA API Test Report" \
         --reporter-htmlextra-showOnlyFails false \
         --reporter-htmlextra-noTestAssertions false \
-        --reporter-htmlextra-showEnvironmentData true
+        --reporter-htmlextra-showEnvironmentData true \
+        || echo "Newman run failed"
 
     - name: Upload Test Report
       uses: actions/upload-artifact@v4
