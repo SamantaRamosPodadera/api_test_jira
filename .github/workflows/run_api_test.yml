@@ -35,7 +35,7 @@ jobs:
             },
             {
               "key": "PASSWORD",
-              "value": "ATATT3xFfGF0LGjKnrbmfaet2jNN1KwpzF_5EWamfKNIlJ0nSieEWSpwSC1lRrDoXqRJJocB2BedFjgRPIrBgzpOZVhvRUBR3IoPrnPJ9JNZz2z8X9UE2DDApSuUpNnkXu-JF91Cvp6ftK20D0gQ4mtRKYffrtMYHTJpG7VM3hzSDNQj89VNr38=362C957F",  # Reemplaza con la contraseña real
+              "value": "ATATT3xFfGF0LGjKnrbmfaet2jNN1KwpzF_5EWamfKNIlJ0nSieEWSpwSC1lRrDoXqRJJocB2BedFjgRPIrBgzpOZVhvRUBR3IoPrnPJ9JNZz2z8X9UE2DDApSuUpNnkXu-JF91Cvp6ftK20D0gQ4mtRKYffrtMYHTJpG7VM3hzSDNQj89VNr38=362C957F",
               "type": "secret",
               "enabled": true
             },
