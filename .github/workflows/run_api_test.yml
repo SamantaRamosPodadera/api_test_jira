@@ -1,0 +1,42 @@
+name: Run JIRA API Tests
+
+on:
+    schedule:
+      - cron: '0 0 * * 0' # Ejecutar a medianoche todos los domingos
+    workflow_dispatch: # Permite ejecutar el workflow manualmente desde la interfaz de GitHub
+
+jobs:
+  jira-api-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+
+    - name: Install Newman and htmlextra reporter
+      run: npm install -g newman newman-reporter-htmlextra
+
+    - name: Set environment variables
+      run: echo "PASSWORD=${{ secrets.PASSWORD }}" >> $GITHUB_ENV
+
+    - name: Run Postman collection with detailed HTML report
+      run: |
+        newman run jiraapitest.postman_collection.json \
+        --environment TEST.postman_environment.json \
+        --reporters htmlextra \
+        --reporter-htmlextra-export newman/report.html \
+        --reporter-htmlextra-title "JIRA API Test Report" \
+        --reporter-htmlextra-showOnlyFails false \
+        --reporter-htmlextra-noTestAssertions false \
+        --reporter-htmlextra-showEnvironmentData true
+
+    - name: Upload Test Report
+      uses: actions/upload-artifact@v4
+      with:
+        name: postman-test-report
+        path: newman/report.html

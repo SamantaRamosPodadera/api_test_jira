@@ -1,0 +1,2150 @@
+{
+	"info": {
+		"_postman_id": "d2b7e768-afc9-4157-aa5a-59b08ae25fb4",
+		"name": "JIRA API Testing with Postman",
+		"description": "## Overview\n\nThis repository contains a Postman collection for testing the JIRA API, specifically focusing on the comments functionality. The tests are designed to validate various response codes and ensure the correct behavior of different endpoints.\n\n## API Documentation\n\nFor detailed information about the JIRA API and the endpoints tested in this collection, please refer to the official API documentation: [JIRA API Documentation](https://developer.atlassian.com/cloud/jira/platform/rest/v2/api-group-issue-comments/#api-group-issue-comments).\n\n## Features\n\n- Automated validation of response codes (success, unauthorized, not found, error).\n    \n- Testing of GET, POST, PUT, and DELETE endpoints related to comments.\n    \n\n## Getting Started\n\n1. Import the Postman collection from this repository into Postman.\n    \n2. Set up the necessary environment variables and authentication details as specified in the collection.\n    \n3. Run the tests to validate the JIRA comments endpoints.\n    \n\n## Running the Tests\n\n1. Open Postman and select the imported collection.\n    \n2. Configure the environment with your JIRA instance details.\n    \n3. Execute the requests and review the results to verify the functionality of the API endpoints.\n    \n\n## Author\n\nSamanta Ramos, QA Analyst. [https://www.linkedin.com/in/samantaramospodadera](https://www.linkedin.com/in/samantaramospodadera)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "34021346"
+	},
+	"item": [
+		{
+			"name": "COMMENTS",
+			"item": [
+				{
+					"name": "UNIT TESTS",
+					"item": [
+						{
+							"name": "GET COMMENT UNIT TESTS",
+							"item": [
+								{
+									"name": "GET COMMENT",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 200\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"});\r",
+													"pm.test(\"Response time is less than 1500ms\", function () {\r",
+													"    pm.expect(pm.response.responseTime).to.be.below(1500);\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Response should have comment id requested\", function () {\r",
+													"    pm.expect(pm.response.text()).to.include(pm.environment.get(\"COMMENTID\"));\r",
+													"\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Response should have text of comment requested\", function () {\r",
+													"    pm.expect(pm.response.text()).to.include(pm.environment.get(\"COMMENTTEXT\"));\r",
+													"\r",
+													"});\r",
+													"\r",
+													"\r",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "basic",
+											"basic": [
+												{
+													"key": "password",
+													"value": "{{PASSWORD}}",
+													"type": "string"
+												},
+												{
+													"key": "username",
+													"value": "{{USERNAME}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{JIRAURL}}/rest/api/2/issue/{{ISSUEID}}/comment/{{COMMENTID}}",
+											"host": [
+												"{{JIRAURL}}"
+											],
+											"path": [
+												"rest",
+												"api",
+												"2",
+												"issue",
+												"{{ISSUEID}}",
+												"comment",
+												"{{COMMENTID}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "GET COMMENT NOT USERNAME",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 404\", function () {\r",
+													"    pm.response.to.have.status(404);\r",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "basic",
+											"basic": [
+												{
+													"key": "username",
+													"value": "",
+													"type": "string"
+												},
+												{
+													"key": "password",
+													"value": "{{PASSWORD}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{JIRAURL}}/rest/api/2/issue/{{ISSUEID}}/comment/{{COMMENTID}}",
+											"host": [
+												"{{JIRAURL}}"
+											],
+											"path": [
+												"rest",
+												"api",
+												"2",
+												"issue",
+												"{{ISSUEID}}",
+												"comment",
+												"{{COMMENTID}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "GET COMMENT NOT ID",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 404\", function () {\r",
+													"    pm.response.to.have.status(404);\r",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "basic",
+											"basic": [
+												{
+													"key": "username",
+													"value": "{{USERNAME}}",
+													"type": "string"
+												},
+												{
+													"key": "password",
+													"value": "{{PASSWORD}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{JIRAURL}}/rest/api/2/issue/ATJ-0/comment/{{COMMENTID}}",
+											"host": [
+												"{{JIRAURL}}"
+											],
+											"path": [
+												"rest",
+												"api",
+												"2",
+												"issue",
+												"ATJ-0",
+												"comment",
+												"{{COMMENTID}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "GET COMMENT NOT EXISTING",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 404\", function () {\r",
+													"    pm.response.to.have.status(404);\r",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "basic",
+											"basic": [
+												{
+													"key": "username",
+													"value": "{{USERNAME}}",
+													"type": "string"
+												},
+												{
+													"key": "password",
+													"value": "{{PASSWORD}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{JIRAURL}}/rest/api/2/issue/{{ISSUEID}}/comment/{{COMMENT_NOT_EXIST}}",
+											"host": [
+												"{{JIRAURL}}"
+											],
+											"path": [
+												"rest",
+												"api",
+												"2",
+												"issue",
+												"{{ISSUEID}}",
+												"comment",
+												"{{COMMENT_NOT_EXIST}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "GET COMMENT NOT AUTHORIZED",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 404\", function () {\r",
+													"    pm.response.to.have.status(404);\r",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{JIRAURL}}/rest/api/2/issue/{{ISSUEID}}/comment/{{COMMENTID}}",
+											"host": [
+												"{{JIRAURL}}"
+											],
+											"path": [
+												"rest",
+												"api",
+												"2",
+												"issue",
+												"{{ISSUEID}}",
+												"comment",
+												"{{COMMENTID}}"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "GET COMMENTS UNIT TESTS",
+							"item": [
+								{
+									"name": "GET COMMENTS",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 200\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"});\r",
+													"pm.test(\"Response time is less than 1500ms\", function () {\r",
+													"    pm.expect(pm.response.responseTime).to.be.below(1500);\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Response should have comment id requested\", function () {\r",
+													"    pm.expect(pm.response.text()).to.include(pm.environment.get(\"COMMENTID\"));\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Response should have text of comment requested\", function () {\r",
+													"    pm.expect(pm.response.text()).to.include(pm.environment.get(\"COMMENTTEXT\"));\r",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "basic",
+											"basic": [
+												{
+													"key": "username",
+													"value": "{{USERNAME}}",
+													"type": "string"
+												},
+												{
+													"key": "password",
+													"value": "{{PASSWORD}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{JIRAURL}}/rest/api/2/issue/{{ISSUEID}}/comment",
+											"host": [
+												"{{JIRAURL}}"
+											],
+											"path": [
+												"rest",
+												"api",
+												"2",
+												"issue",
+												"{{ISSUEID}}",
+												"comment"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "GET COMMENTS maxresults",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 200\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "basic",
+											"basic": [
+												{
+													"key": "username",
+													"value": "{{USERNAME}}",
+													"type": "string"
+												},
+												{
+													"key": "password",
+													"value": "{{PASSWORD}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{JIRAURL}}/rest/api/2/issue/{{ISSUEID}}/comment?maxResults=1",
+											"host": [
+												"{{JIRAURL}}"
+											],
+											"path": [
+												"rest",
+												"api",
+												"2",
+												"issue",
+												"{{ISSUEID}}",
+												"comment"
+											],
+											"query": [
+												{
+													"key": "maxResults",
+													"value": "1"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "GET COMMENTS startAT",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 200\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "basic",
+											"basic": [
+												{
+													"key": "username",
+													"value": "{{USERNAME}}",
+													"type": "string"
+												},
+												{
+													"key": "password",
+													"value": "{{PASSWORD}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{JIRAURL}}/rest/api/2/issue/{{ISSUEID}}/comment?startAT=1",
+											"host": [
+												"{{JIRAURL}}"
+											],
+											"path": [
+												"rest",
+												"api",
+												"2",
+												"issue",
+												"{{ISSUEID}}",
+												"comment"
+											],
+											"query": [
+												{
+													"key": "startAT",
+													"value": "1"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "GET COMMENTS NOT AUTHORIZATION",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"When I get comments with no authorization, then I should get error code 404\", function () {\r",
+													"    pm.response.to.have.status(404);\r",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{JIRAURL}}/rest/api/2/issue/{{ISSUEID}}/comment",
+											"host": [
+												"{{JIRAURL}}"
+											],
+											"path": [
+												"rest",
+												"api",
+												"2",
+												"issue",
+												"{{ISSUEID}}",
+												"comment"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "GET COMMENTS WITH EMPTY ISSUE ID",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"When I GET a comment with empty issue id, Then Status code should be 404\", function () {\r",
+													"    pm.response.to.have.status(404);\r",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "basic",
+											"basic": [
+												{
+													"key": "username",
+													"value": "{{USERNAME}}",
+													"type": "string"
+												},
+												{
+													"key": "password",
+													"value": "{{PASSWORD}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{JIRAURL}}/rest/api/2/issue//comment",
+											"host": [
+												"{{JIRAURL}}"
+											],
+											"path": [
+												"rest",
+												"api",
+												"2",
+												"issue",
+												"",
+												"comment"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "GET COMMENTS NOT PASSWORD",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 404\", function () {\r",
+													"    pm.response.to.have.status(404);\r",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "basic",
+											"basic": [
+												{
+													"key": "password",
+													"value": "",
+													"type": "string"
+												},
+												{
+													"key": "username",
+													"value": "{{USERNAME}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{JIRAURL}}/rest/api/2/issue/{{ISSUEID}}/comment/",
+											"host": [
+												"{{JIRAURL}}"
+											],
+											"path": [
+												"rest",
+												"api",
+												"2",
+												"issue",
+												"{{ISSUEID}}",
+												"comment",
+												""
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "GET COMMENTS NOT USERNAME",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 404\", function () {\r",
+													"    pm.response.to.have.status(404);\r",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "basic",
+											"basic": [
+												{
+													"key": "username",
+													"value": "",
+													"type": "string"
+												},
+												{
+													"key": "password",
+													"value": "{{PASSWORD}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{JIRAURL}}/rest/api/2/issue/{{ISSUEID}}/comment",
+											"host": [
+												"{{JIRAURL}}"
+											],
+											"path": [
+												"rest",
+												"api",
+												"2",
+												"issue",
+												"{{ISSUEID}}",
+												"comment"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "GET COMMENTS VALID ID",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 200\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "basic",
+											"basic": [
+												{
+													"key": "username",
+													"value": "{{USERNAME}}",
+													"type": "string"
+												},
+												{
+													"key": "password",
+													"value": "{{PASSWORD}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{JIRAURL}}/rest/api/2/issue/ATJ-1/comment",
+											"host": [
+												"{{JIRAURL}}"
+											],
+											"path": [
+												"rest",
+												"api",
+												"2",
+												"issue",
+												"ATJ-1",
+												"comment"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "GET COMMENTS ORDER BY INVALID",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 400\", function () {\r",
+													"    pm.response.to.have.status(400);\r",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "basic",
+											"basic": [
+												{
+													"key": "username",
+													"value": "{{USERNAME}}",
+													"type": "string"
+												},
+												{
+													"key": "password",
+													"value": "{{PASSWORD}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{JIRAURL}}/rest/api/2/issue/{{ISSUEID}}/comment?orderBy=invalid",
+											"host": [
+												"{{JIRAURL}}"
+											],
+											"path": [
+												"rest",
+												"api",
+												"2",
+												"issue",
+												"{{ISSUEID}}",
+												"comment"
+											],
+											"query": [
+												{
+													"key": "orderBy",
+													"value": "invalid"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "GET COMMENTS ORDER BY CREATED",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 200\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "basic",
+											"basic": [
+												{
+													"key": "username",
+													"value": "{{USERNAME}}",
+													"type": "string"
+												},
+												{
+													"key": "password",
+													"value": "{{PASSWORD}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{JIRAURL}}/rest/api/2/issue/{{ISSUEID}}/comment?orderBy=created",
+											"host": [
+												"{{JIRAURL}}"
+											],
+											"path": [
+												"rest",
+												"api",
+												"2",
+												"issue",
+												"{{ISSUEID}}",
+												"comment"
+											],
+											"query": [
+												{
+													"key": "orderBy",
+													"value": "created"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "GET COMMENTS ORDER BY -CREATED",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 200\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "basic",
+											"basic": [
+												{
+													"key": "username",
+													"value": "{{USERNAME}}",
+													"type": "string"
+												},
+												{
+													"key": "password",
+													"value": "{{PASSWORD}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{JIRAURL}}/rest/api/2/issue/{{ISSUEID}}/comment?orderBy=-created",
+											"host": [
+												"{{JIRAURL}}"
+											],
+											"path": [
+												"rest",
+												"api",
+												"2",
+												"issue",
+												"{{ISSUEID}}",
+												"comment"
+											],
+											"query": [
+												{
+													"key": "orderBy",
+													"value": "-created"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "GET COMMENTS ORDER BY +CREATED",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 200\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "basic",
+											"basic": [
+												{
+													"key": "username",
+													"value": "{{USERNAME}}",
+													"type": "string"
+												},
+												{
+													"key": "password",
+													"value": "{{PASSWORD}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{JIRAURL}}/rest/api/2/issue/{{ISSUEID}}/comment?orderBy=+created",
+											"host": [
+												"{{JIRAURL}}"
+											],
+											"path": [
+												"rest",
+												"api",
+												"2",
+												"issue",
+												"{{ISSUEID}}",
+												"comment"
+											],
+											"query": [
+												{
+													"key": "orderBy",
+													"value": "+created"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "POST COMMENT UNIT TESTS",
+							"item": [
+								{
+									"name": "POST COMMENTS INVALID ISSUE ID",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 404\", function () {\r",
+													"    pm.response.to.have.status(404);\r",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "basic",
+											"basic": [
+												{
+													"key": "username",
+													"value": "{{USERNAME}}",
+													"type": "string"
+												},
+												{
+													"key": "password",
+													"value": "{{PASSWORD}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"body\":\"test comment\"\r\n}\r\n",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{JIRAURL}}/rest/api/2/issue/ATJ-0/comment",
+											"host": [
+												"{{JIRAURL}}"
+											],
+											"path": [
+												"rest",
+												"api",
+												"2",
+												"issue",
+												"ATJ-0",
+												"comment"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "POST COMMENTS INVALID BODY",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 400\", function () {\r",
+													"    pm.response.to.have.status(400);\r",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "basic",
+											"basic": [
+												{
+													"key": "username",
+													"value": "{{USERNAME}}",
+													"type": "string"
+												},
+												{
+													"key": "password",
+													"value": "{{PASSWORD}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"bodyinvalid\":\"test comment 1\"\r\n}\r\n",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{JIRAURL}}/rest/api/2/issue/{{ISSUEID}}/comment",
+											"host": [
+												"{{JIRAURL}}"
+											],
+											"path": [
+												"rest",
+												"api",
+												"2",
+												"issue",
+												"{{ISSUEID}}",
+												"comment"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "POST COMMENTS EMPTY BODY",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 400\", function () {\r",
+													"    pm.response.to.have.status(400);\r",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "basic",
+											"basic": [
+												{
+													"key": "username",
+													"value": "{{USERNAME}}",
+													"type": "string"
+												},
+												{
+													"key": "password",
+													"value": "{{PASSWORD}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"body\":\"\"\r\n}\r\n",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{JIRAURL}}/rest/api/2/issue/{{ISSUEID}}/comment",
+											"host": [
+												"{{JIRAURL}}"
+											],
+											"path": [
+												"rest",
+												"api",
+												"2",
+												"issue",
+												"{{ISSUEID}}",
+												"comment"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "POST COMMENTS INVALID USERNAME",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 404\", function () {\r",
+													"    pm.response.to.have.status(404);\r",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "basic",
+											"basic": [
+												{
+													"key": "username",
+													"value": "MARCHCHCHC",
+													"type": "string"
+												},
+												{
+													"key": "password",
+													"value": "{{PASSWORD}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"body\":\"username\"\r\n}\r\n",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{JIRAURL}}/rest/api/2/issue/{{ISSUEID}}/comment",
+											"host": [
+												"{{JIRAURL}}"
+											],
+											"path": [
+												"rest",
+												"api",
+												"2",
+												"issue",
+												"{{ISSUEID}}",
+												"comment"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "POST COMMENTS INVALID PASSWORD",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 404\", function () {\r",
+													"    pm.response.to.have.status(404);\r",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "basic",
+											"basic": [
+												{
+													"key": "password",
+													"value": "999999999",
+													"type": "string"
+												},
+												{
+													"key": "username",
+													"value": "{{USERNAME}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"bodyinvalid\":\"ahahahahah\"\r\n}\r\n",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{JIRAURL}}/rest/api/2/issue/{{ISSUEID}}/comment",
+											"host": [
+												"{{JIRAURL}}"
+											],
+											"path": [
+												"rest",
+												"api",
+												"2",
+												"issue",
+												"{{ISSUEID}}",
+												"comment"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "DELETE  COMMENT UNIT TESTS",
+							"item": [
+								{
+									"name": "DELETE COMMENT invalid issue id",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 404\", function () {\r",
+													"    pm.response.to.have.status(404);\r",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "basic",
+											"basic": [
+												{
+													"key": "username",
+													"value": "{{USERNAME}}",
+													"type": "string"
+												},
+												{
+													"key": "password",
+													"value": "{{PASSWORD}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{JIRAURL}}/rest/api/2/issue/ITJ-0/comment/{{COMMENTID}}",
+											"host": [
+												"{{JIRAURL}}"
+											],
+											"path": [
+												"rest",
+												"api",
+												"2",
+												"issue",
+												"ITJ-0",
+												"comment",
+												"{{COMMENTID}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "DELETE COMMENT invalid comment id",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 404\", function () {\r",
+													"    pm.response.to.have.status(404);\r",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "basic",
+											"basic": [
+												{
+													"key": "username",
+													"value": "{{USERNAME}}",
+													"type": "string"
+												},
+												{
+													"key": "password",
+													"value": "{{PASSWORD}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{JIRAURL}}/rest/api/2/issue/{{ISSUEID}}/comment/{{INVALIDCOMMENT}}",
+											"host": [
+												"{{JIRAURL}}"
+											],
+											"path": [
+												"rest",
+												"api",
+												"2",
+												"issue",
+												"{{ISSUEID}}",
+												"comment",
+												"{{INVALIDCOMMENT}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "DELETE COMMENT not authorization",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 404\", function () {\r",
+													"    pm.response.to.have.status(404);\r",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{JIRAURL}}/rest/api/2/issue/{{ISSUEID}}/comment/{{COMMENTID}}",
+											"host": [
+												"{{JIRAURL}}"
+											],
+											"path": [
+												"rest",
+												"api",
+												"2",
+												"issue",
+												"{{ISSUEID}}",
+												"comment",
+												"{{COMMENTID}}"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "UPDATE COMMENT UNIT TESTS",
+							"item": [
+								{
+									"name": "UPDATE COMMENT WITH  NON EXISTING COMMENT ID",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 404\", function () {\r",
+													"    pm.response.to.have.status(404);\r",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "basic",
+											"basic": [
+												{
+													"key": "username",
+													"value": "{{USERNAME}}",
+													"type": "string"
+												},
+												{
+													"key": "password",
+													"value": "{{PASSWORD}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"body\":\"test comment updated\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{JIRAURL}}/rest/api/2/issue/{{ISSUEID}}/comment/1",
+											"host": [
+												"{{JIRAURL}}"
+											],
+											"path": [
+												"rest",
+												"api",
+												"2",
+												"issue",
+												"{{ISSUEID}}",
+												"comment",
+												"1"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "UPDATE COMMENT WITH INVALID BODY",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 400\", function () {\r",
+													"    pm.response.to.have.status(400);\r",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "basic",
+											"basic": [
+												{
+													"key": "username",
+													"value": "{{USERNAME}}",
+													"type": "string"
+												},
+												{
+													"key": "password",
+													"value": "{{PASSWORD}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"invalid\":\"test comment updated\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{JIRAURL}}/rest/api/2/issue/{{ISSUEID}}/comment/{{COMMENTID}}",
+											"host": [
+												"{{JIRAURL}}"
+											],
+											"path": [
+												"rest",
+												"api",
+												"2",
+												"issue",
+												"{{ISSUEID}}",
+												"comment",
+												"{{COMMENTID}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "UPDATE COMMENT WITH EMPTY COMMENT",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 400\", function () {\r",
+													"    pm.response.to.have.status(400);\r",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "basic",
+											"basic": [
+												{
+													"key": "username",
+													"value": "{{USERNAME}}",
+													"type": "string"
+												},
+												{
+													"key": "password",
+													"value": "{{PASSWORD}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"body\":\"\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{JIRAURL}}/rest/api/2/issue/{{ISSUEID}}/comment/{{COMMENTID}}",
+											"host": [
+												"{{JIRAURL}}"
+											],
+											"path": [
+												"rest",
+												"api",
+												"2",
+												"issue",
+												"{{ISSUEID}}",
+												"comment",
+												"{{COMMENTID}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "UPDATE COMMENT WITH EMPTY COMMENT invalid",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 400\", function () {\r",
+													"    pm.response.to.have.status(400);\r",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "basic",
+											"basic": [
+												{
+													"key": "username",
+													"value": "{{USERNAME}}",
+													"type": "string"
+												},
+												{
+													"key": "password",
+													"value": "{{PASSWORD}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"\":\"abcde\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{JIRAURL}}/rest/api/2/issue/{{ISSUEID}}/comment/{{COMMENTID}}",
+											"host": [
+												"{{JIRAURL}}"
+											],
+											"path": [
+												"rest",
+												"api",
+												"2",
+												"issue",
+												"{{ISSUEID}}",
+												"comment",
+												"{{COMMENTID}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "UPDATE COMMENT invalid authorization",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 404\", function () {\r",
+													"    pm.response.to.have.status(404);\r",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"body\":\"\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{JIRAURL}}/rest/api/2/issue/{{ISSUEID}}/comment/{{COMMENTID}}",
+											"host": [
+												"{{JIRAURL}}"
+											],
+											"path": [
+												"rest",
+												"api",
+												"2",
+												"issue",
+												"{{ISSUEID}}",
+												"comment",
+												"{{COMMENTID}}"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					],
+					"description": "Unit tests for JIRA API"
+				},
+				{
+					"name": "END TO END TESTS",
+					"item": [
+						{
+							"name": "CREATE AND DELETE A COMMENT END TO END",
+							"item": [
+								{
+									"name": "POST VALID COMMENT",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 201\", function () {\r",
+													"    pm.response.to.have.status(201);\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Response time is less than 2000ms\", function () {\r",
+													"\tpm.expect(pm.response.responseTime).to.be.below(2000);\r",
+													"});\r",
+													"//Response body: Contains String\r",
+													"pm.test(\"Response should have text of comment created\", function () {\r",
+													"\tpm.expect(pm.response.text()).to.include(\"new comment to delete\");\r",
+													"});\r",
+													"\r",
+													"//Primero guardo la respuesta en json\r",
+													"let jsonData = pm.response.json();\r",
+													"//Segundo guardo el id devuelto en la respuesta\r",
+													"let commentId = jsonData.id;\r",
+													"//Tercero creo una variable COMMENT_CREATED con el valor del id del comentario que acabamos de crear.\r",
+													"pm.environment.set(\"COMMENT_CREATED\", commentId);"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "basic",
+											"basic": [
+												{
+													"key": "username",
+													"value": "{{USERNAME}}",
+													"type": "string"
+												},
+												{
+													"key": "password",
+													"value": "{{PASSWORD}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"body\":\"new comment to delete\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{JIRAURL}}/rest/api/2/issue/{{ISSUEID}}/comment",
+											"host": [
+												"{{JIRAURL}}"
+											],
+											"path": [
+												"rest",
+												"api",
+												"2",
+												"issue",
+												"{{ISSUEID}}",
+												"comment"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "UPDATE COMMENT",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 200\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "basic",
+											"basic": [
+												{
+													"key": "username",
+													"value": "{{USERNAME}}",
+													"type": "string"
+												},
+												{
+													"key": "password",
+													"value": "{{PASSWORD}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"body\":\"test comment update\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{JIRAURL}}/rest/api/2/issue/{{ISSUEID}}/comment/{{COMMENT_CREATED}}",
+											"host": [
+												"{{JIRAURL}}"
+											],
+											"path": [
+												"rest",
+												"api",
+												"2",
+												"issue",
+												"{{ISSUEID}}",
+												"comment",
+												"{{COMMENT_CREATED}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "GET COMMENT",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 200\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"});\r",
+													"pm.test(\"Response time is less than 1500ms\", function () {\r",
+													"    pm.expect(pm.response.responseTime).to.be.below(1500);\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Response should have comment id requested\", function () {\r",
+													"    pm.expect(pm.response.text()).to.include(pm.environment.get(\"COMMENT_CREATED\"));\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Response should have text of comment requested\", function () {\r",
+													"    pm.expect(pm.response.text()).to.include(\"test comment update\");\r",
+													"});\r",
+													"\r",
+													"\r",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "basic",
+											"basic": [
+												{
+													"key": "username",
+													"value": "{{USERNAME}}",
+													"type": "string"
+												},
+												{
+													"key": "password",
+													"value": "{{PASSWORD}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{JIRAURL}}/rest/api/2/issue/{{ISSUEID}}/comment/{{COMMENT_CREATED}}",
+											"host": [
+												"{{JIRAURL}}"
+											],
+											"path": [
+												"rest",
+												"api",
+												"2",
+												"issue",
+												"{{ISSUEID}}",
+												"comment",
+												"{{COMMENT_CREATED}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "DELETE COMMENT",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 204\", function () {\r",
+													"    pm.response.to.have.status(204);\r",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "basic",
+											"basic": [
+												{
+													"key": "username",
+													"value": "{{USERNAME}}",
+													"type": "string"
+												},
+												{
+													"key": "password",
+													"value": "{{PASSWORD}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{JIRAURL}}/rest/api/2/issue/{{ISSUEID}}/comment/{{COMMENT_CREATED}}",
+											"host": [
+												"{{JIRAURL}}"
+											],
+											"path": [
+												"rest",
+												"api",
+												"2",
+												"issue",
+												"{{ISSUEID}}",
+												"comment",
+												"{{COMMENT_CREATED}}"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "CREATE A COMMENT WITH SPECIAL CHARAPTERS AND DELETE",
+							"item": [
+								{
+									"name": "POST VALID COMMENT WITH  SPECIAL CHARACTERS",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 201\", function () {\r",
+													"    pm.response.to.have.status(201);\r",
+													"});\r",
+													"\r",
+													"let jsonData = pm.response.json();\r",
+													"let commentId = jsonData.id;\r",
+													"\r",
+													"pm.environment.set(\"COMMENT_CREATED\", commentId);\r",
+													"\r",
+													"console.log(commentId);"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "basic",
+											"basic": [
+												{
+													"key": "username",
+													"value": "{{USERNAME}}",
+													"type": "string"
+												},
+												{
+													"key": "password",
+													"value": "{{PASSWORD}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"body\":\"*-/-/*09857@#$%&$%^&$%^&$%&$%*$%^*$%^&\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{JIRAURL}}/rest/api/2/issue/{{ISSUEID}}/comment",
+											"host": [
+												"{{JIRAURL}}"
+											],
+											"path": [
+												"rest",
+												"api",
+												"2",
+												"issue",
+												"{{ISSUEID}}",
+												"comment"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "GET COMMENT",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 200\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"});\r",
+													"pm.test(\"Response time is less than 1500ms\", function () {\r",
+													"    pm.expect(pm.response.responseTime).to.be.below(1500);\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Response should have comment id requested\", function () {\r",
+													"    pm.expect(pm.response.text()).to.include(pm.environment.get(\"COMMENT_CREATED\"));\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Response should have text of comment requested\", function () {\r",
+													"    pm.expect(pm.response.text()).to.include(\"*-/-/*09857@#$%&$%^&$%^&$%&$%*$%^*$%^&\");\r",
+													"});\r",
+													"\r",
+													"\r",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "basic",
+											"basic": [
+												{
+													"key": "username",
+													"value": "{{USERNAME}}",
+													"type": "string"
+												},
+												{
+													"key": "password",
+													"value": "{{PASSWORD}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{JIRAURL}}/rest/api/2/issue/{{ISSUEID}}/comment/{{COMMENT_CREATED}}",
+											"host": [
+												"{{JIRAURL}}"
+											],
+											"path": [
+												"rest",
+												"api",
+												"2",
+												"issue",
+												"{{ISSUEID}}",
+												"comment",
+												"{{COMMENT_CREATED}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "DELETE COMMENT",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 204\", function () {\r",
+													"    pm.response.to.have.status(204);\r",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "basic",
+											"basic": [
+												{
+													"key": "username",
+													"value": "{{USERNAME}}",
+													"type": "string"
+												},
+												{
+													"key": "password",
+													"value": "{{PASSWORD}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{JIRAURL}}/rest/api/2/issue/{{ISSUEID}}/comment/{{COMMENT_CREATED}}",
+											"host": [
+												"{{JIRAURL}}"
+											],
+											"path": [
+												"rest",
+												"api",
+												"2",
+												"issue",
+												"{{ISSUEID}}",
+												"comment",
+												"{{COMMENT_CREATED}}"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}
