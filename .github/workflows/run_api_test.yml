@@ -18,8 +18,8 @@ jobs:
       with:
         node-version: '20'
 
-    - name: Install Newman and htmlextra reporter
-      run: npm install -g newman newman-reporter-htmlextra
+    - name: Install Newman and html reporter
+      run: npm install -g newman newman-reporter-html
 
     - name: Run Postman collection with detailed HTML report
       env:
@@ -29,12 +29,9 @@ jobs:
         newman run jiraapitest.postman_collection.json \
         --environment TEST.postman_environment.json \
         --env-var PASSWORD=${{ secrets.PASSWORD }} \
-        --reporters htmlextra \
-        --reporter-htmlextra-export newman/report.html \
-        --reporter-htmlextra-title "JIRA API Test Report" \
-        --reporter-htmlextra-showOnlyFails false \
-        --reporter-htmlextra-noTestAssertions false \
-        --reporter-htmlextra-showEnvironmentData true
+        --reporters html \
+        --reporter-html-export newman/report.html \
+        --reporter-html-title "JIRA API Test Report"
 
     - name: Upload Test Report
       uses: actions/upload-artifact@v4
