@@ -1,9 +1,9 @@
 name: Run JIRA API Tests
 
 on:
-    schedule:
-      - cron: '0 0 * * 0' # Ejecutar a medianoche todos los domingos
-    workflow_dispatch: # Permite ejecutar el workflow manualmente desde la interfaz de GitHub
+  schedule:
+    - cron: '0 0 * * 0' # Ejecutar a medianoche todos los domingos
+  workflow_dispatch: # Permite ejecutar el workflow manualmente desde la interfaz de GitHub
 
 jobs:
   jira-api-tests:
@@ -18,37 +18,27 @@ jobs:
       with:
         node-version: '20'
 
-    - name: Install Newman and htmlextra reporter
-      run: npm install -g newman newman-reporter-htmlextra
+    - name: Install Newman and html reporter
+      run: npm install -g newman newman-reporter-html
 
     - name: Inject GitHub Secret into environment file
       run: |
-        echo "Reemplazando PASSWORD en el archivo de entorno"
-        envsubst < TEST.postman_environment.json > TEST.postman_environment_final.json
-      env:
-        PASSWORD: ${{ secrets.PASSWORD }}
+        # Reemplaza la contraseña en el archivo de entorno usando sed
+        sed -i 's/\${PASSWORD}/${{ secrets.PASSWORD }}/g' TEST.postman_environment.json
 
     - name: Display final environment file content (for debugging)
-      run: cat TEST.postman_environment_final.json
+      run: cat TEST.postman_environment.json
 
     - name: Run Postman collection with detailed HTML report
       continue-on-error: true
       run: |
         newman run jiraapitest.postman_collection.json \
-        --environment TEST.postman_environment_final.json \
-        --reporters cli,htmlextra \
-        --reporter-htmlextra-export newman/report.html \
-        --reporter-htmlextra-title "JIRA API Test Report" \
-        --reporter-htmlextra-showOnlyFails false \
-        --reporter-htmlextra-noTestAssertions false \
-        --reporter-htmlextra-showEnvironmentData true
+        --environment TEST.postman_environment.json \
+        --reporters cli,html \
+        --reporter-html-export newman/report.html
 
     - name: Upload Test Report
       uses: actions/upload-artifact@v4
       with:
         name: postman-test-report
         path: newman/report.html
-
-    - name: Print Newman log (if needed)
-      if: failure()
-      run: cat newman/report.html
