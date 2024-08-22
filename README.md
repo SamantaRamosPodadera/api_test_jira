@@ -19,7 +19,8 @@ This project performs automated testing of the JIRA API, focusing on the comment
 
 ## Viewing Test Results
 
-After each test run, an HTML report is generated and uploaded. You can view the detailed test results, including both successful and failed tests, in the report. Access the latest test report from the [GitHub Actions artifacts](https://github.com/yourusername/jira-api-comments-testing/actions) section.
+After each test run, an HTML report is generated and uploaded. You can view the detailed test results, including both successful and failed tests, in the report. Access the latest test report from the [GitHub Actions artifacts](https://github.com/SamantaRamosPodadera/api_test_jira/actions)
+ section.
 
 ## Author
 
